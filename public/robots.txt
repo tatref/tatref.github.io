@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://tatref.github.io/sitemap.xml

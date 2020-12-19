@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://tatref.github.io/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/about/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/blog/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/blog/2020-hello-world/</loc>
+        <lastmod>2020-12-19</lastmod>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/content/</loc>
+        <lastmod>2020-12-18</lastmod>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/misc/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/misc/page/1/</loc>
+    </url>
+</urlset>
