@@ -1,6 +1,6 @@
 +++
 title = "title"
-slug = "title"
+slug = "2099-title"
 #description = "a short description"
 
 date = 2099-01-01
@@ -9,8 +9,7 @@ date = 2099-01-01
 draft = true
 
 [taxonomies]
-tags = ["test", "web"]
-#authors = ["JB", "Alfred", "Nobel"]
+tags = ["test"]
 +++
 
 # Demo
