@@ -11,7 +11,11 @@
     </url>
     <url>
         <loc>https://tatref.github.io/blog/2020-hello-world/</loc>
-        <lastmod>2020-12-19</lastmod>
+        <lastmod>2020-12-20</lastmod>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/blog/posix-conventions/</loc>
+        <lastmod>2020-12-20</lastmod>
     </url>
     <url>
         <loc>https://tatref.github.io/content/</loc>
@@ -21,9 +25,21 @@
         <loc>https://tatref.github.io/tags/</loc>
     </url>
     <url>
+        <loc>https://tatref.github.io/tags/linux/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/linux/page/1/</loc>
+    </url>
+    <url>
         <loc>https://tatref.github.io/tags/misc/</loc>
     </url>
     <url>
         <loc>https://tatref.github.io/tags/misc/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/shell/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/shell/page/1/</loc>
     </url>
 </urlset>

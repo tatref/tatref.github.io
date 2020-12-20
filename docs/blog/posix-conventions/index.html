@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        
+
+        <title>POSIX Conventions</title>
+
+        
+            <link rel="stylesheet" href="https://tatref.github.io/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;tatref.github.io" class="logo">tatref@home:~$</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/blog/">
+                                    <span itemprop="name">Blog</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/about/">
+                                    <span itemprop="name">About</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/tatref">
+                                <img class="icon" src="https:&#x2F;&#x2F;tatref.github.io/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>POSIX Conventions</h1>
+        <div class="border"></div>
+        <time datetime=" 2020-12-20" class="date" itemprop="datePublished">
+            
+            20 Dec 2020
+            
+        </time>
+        <div class="tags">
+            
+            Tags:
+            
+            <a href="/tags/linux">linux</a>
+            
+            <a href="/tags/shell">shell</a>
+            
+            
+        </div>
+    </div>
+
+    <div>
+        
+        <ul>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/posix-conventions/#introduction">Introduction</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/posix-conventions/#the-shell-prompt">The Shell Prompt</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/posix-conventions/#command-line-arguments">Command line arguments</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/posix-conventions/#program-options">Program Options</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/posix-conventions/#sources-references">Sources &amp; References</a>
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="border"></div>
+
+    <div itemprop="articleBody">
+        <h1 id="introduction">Introduction</h1>
+<p>Nearly all conventions on Linux originate from Unix or POSIX</p>
+<h1 id="the-shell-prompt">The Shell Prompt</h1>
+<p>The prompt is what is displayed when you start a terminal, the default looks like</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">user@server:~$</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p>This is useful to know which server we're connected to</p>
+<p>I might abbreviate this to just <code>$</code> (simple user), <code>#</code> (root), or <code>&gt;</code> (non-shell prompt)</p>
+<p>For example</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ sudo su - </span><span style="color:#dcdcdc;">
+# mysql</span><span style="color:#dcdcdc;">
+mysql&gt; exit</span><span style="color:#dcdcdc;">
+</span></code></pre><h1 id="command-line-arguments">Command line arguments</h1>
+<p><code>[]</code> is used for optional argument</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ ls [filename]</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p><code>...</code> is used for repeated arguments</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ ls [filename,...]</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p><code>&lt;&gt;</code> is used for a mandatory argument</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ cp &lt;source&gt; &lt;destination&gt;</span><span style="color:#dcdcdc;">
+</span></code></pre><h1 id="program-options">Program Options</h1>
+<p>Single dash <code>-</code> is followed by multiple single character options. If multiple characters are specified, each character is a specific option</p>
+<p>The following is equivalent</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ ls -ltr</span><span style="color:#dcdcdc;">
+$ ls -l -t -r</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p>A single dash <code>-</code>, when used in the place of a filename, is a synonym for <code>stdin</code>. Here we concatenate <strong>bar</strong> and <strong>foo</strong> from <code>stdin</code></p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ echo foo | cat bar -</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p>Double dash <code>--</code> is followed by a single, multi character option</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ ls --all</span><span style="color:#dcdcdc;">
+</span></code></pre>
+<p>A single double dash <code>--</code> without trailing characters shows the end of options. It's useful if an argument starts with a double dash</p>
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">$ ls -al --annoying-filename</span><span style="color:#dcdcdc;">
+ls: unrecognized option &#39;--annoying-filename&#39;</span><span style="color:#dcdcdc;">
+Try &#39;ls --help&#39; for more information.</span><span style="color:#dcdcdc;">
+$ ls -al -- --annoying-filename</span><span style="color:#dcdcdc;">
+-rw-r--r--  1 tatref tatref     0 Dec 20 22:33 --annoying-filename</span><span style="color:#dcdcdc;">
+</span></code></pre><h1 id="sources-references">Sources &amp; References</h1>
+<ol>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xcu_chap02.html">POSIX - Shell Command Language</a></li>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html">POSIX - Utility Conventions</a></li>
+<li><a href="http://docopt.org/">docopt</a></li>
+</ol>
+
+    </div>
+
+    <h1>Comments</h1>
+    <script src="https://utteranc.es/client.js" repo="tatref/tatref.github.io" issue-term="url" label="comment"
+        theme="dark-blue" crossorigin="anonymous" async>
+        </script>
+
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; tatref
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>

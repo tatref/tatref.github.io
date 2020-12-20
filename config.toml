@@ -12,6 +12,7 @@ highlight_theme = "visual-studio-dark"
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
 
+
 #theme = "zola-pickles"
 theme = "oceanic-zen"
 
@@ -23,6 +24,8 @@ taxonomies = [
 ]
 
 [link_checker]
+
+extra_syntaxes = ["syntaxes"]
 
 
 [extra]
