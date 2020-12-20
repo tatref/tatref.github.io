@@ -15,7 +15,7 @@ build_search_index = false
 #theme = "zola-pickles"
 theme = "oceanic-zen"
 
-title = "@tatref"
+title = "tatref@home:~$"
 
 taxonomies = [
     {name = "tags", rss = false, paginate_by = 5}, 
