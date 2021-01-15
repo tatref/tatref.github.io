@@ -17,7 +17,7 @@ tags = ["linux", "shell"]
 Nearly all conventions on Linux originate from Unix or POSIX
 
 
-# The Shell Prompt
+# Shell Prompt
 The prompt is what is displayed when you start a terminal, the default looks like
 ```shell-session
 user@server:~$

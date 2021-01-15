@@ -6,14 +6,11 @@ compile_sass = true
 
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = true
 highlight_theme = "visual-studio-dark"
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
 
-
-#theme = "zola-pickles"
 theme = "oceanic-zen"
 
 title = "tatref@home:~$"
@@ -23,14 +20,11 @@ taxonomies = [
     {name = "authors", rss = false, paginate_by = 5}, 
 ]
 
-[link_checker]
-
+[markdown]
 extra_syntaxes = ["syntaxes"]
+highlight_code = true
 
 
 [extra]
-# Put all your custom variables here
-
-
 author = "tatref"
 github = "tatref"

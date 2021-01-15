@@ -1,0 +1,16 @@
+%YAML 1.2
+---
+file_extensions:
+  - shell-session
+scope: source.test
+
+contexts:
+  main:
+    - match: "^((?:\\(.*?\\) )?[^ ]*(?:\\$|#|>))( .*)?"
+    #           ^^^^^^^^^^^^^^ python venv
+    #                          ^^^^ user@hostname
+    #                               ^^^^^^^^^^^^ last prompt character
+    #                                           ^^^^^ command
+      captures:
+        1: constant.prompt
+        2: keyword.command
