@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        
+
+        <title>Operating Systems Architecture</title>
+
+        
+            <link rel="stylesheet" href="https://tatref.github.io/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;tatref.github.io" class="logo">@tatref</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/blog/">
+                                    <span itemprop="name">Blog</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/about/">
+                                    <span itemprop="name">About</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/tatref">
+                                <img class="icon" src="https:&#x2F;&#x2F;tatref.github.io/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Operating Systems Architecture</h1>
+        <div class="border"></div>
+        <time datetime=" 2021-01-18" class="date" itemprop="datePublished">
+            
+            18 Jan 2021
+            
+        </time>
+        <div class="tags">
+            
+            Tags:
+            
+            <a href="/tags/Operating Systems">Operating Systems</a>
+            
+            
+        </div>
+    </div>
+
+    <div>
+        
+        <ul>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#introduction">Introduction</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#operating-system-layers">Operating System Layers</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#system-calls">System Calls</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#security-rings">Security Rings</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#user-vs-root">User vs Root</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2021-os-architecture/#sources-references">Sources &amp; References</a>
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="border"></div>
+
+    <div itemprop="articleBody">
+        <h1 id="introduction">Introduction</h1>
+<p>In this article, I will illustrate some operating system concepts with examples from Linux / Unix.</p>
+<p>These concepts are tied to the architecture, so they still apply with other operating systems (for example, see <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/user-mode-and-kernel-mode">Windows user mode and kernel mode</a>).</p>
+<h1 id="operating-system-layers">Operating System Layers</h1>
+<p>Operating systems are organized in abstraction layers, bottom layer closer to the hardware, upper layers closer to user applications.</p>
+<p><img src="/assets/2021/os-architecture_Operating_system_placement.svg" alt="Kernel Layout" /></p>
+<p><i>Source: <a href=https://en.wikipedia.org/wiki/Operating_system>https://en.wikipedia.org/wiki/Operating_system</a></i></p>
+<p>The kernel is responsible for:</p>
+<ul>
+<li>Interaction with hardware devices (drivers)</li>
+<li>Multitasking (process scheduling, permissions)</li>
+<li>Memory management (paging, permissions)</li>
+<li>Abstraction layers (Virtual File System)</li>
+<li>Networking</li>
+<li>CPU mode (rings)</li>
+</ul>
+<h1 id="system-calls">System Calls</h1>
+<p>User processes interact with the kernel using <strong>system calls</strong> or <strong>syscalls</strong>.</p>
+<p><img src="/assets/2021/os-architecture_syscall.svg" alt="System Calls" /></p>
+<p>Syscalls can be used to</p>
+<ul>
+<li>interact with files (open, read, write)</li>
+<li>interact with processes (create, kill)</li>
+<li>allocate / deallocate memory</li>
+</ul>
+<p>Syscalls are either called directly by the user process, or called via a glibc wrapper, that also provide some POSIX features.</p>
+<p><code>strace</code> can be used to trace syscalls called by a program at runtime.</p>
+<h1 id="security-rings">Security Rings</h1>
+<p>Kernel and user space run into different CPU modes, usually represented as concentric rings.</p>
+<p><img src="/assets/2021/os-architecture_Priv_rings.svg" alt="Rings" /></p>
+<p><i>Source: <a href=https://en.wikipedia.org/wiki/Protection_ring>https://en.wikipedia.org/wiki/Protection_ring</a></i></p>
+<p>In practice, operating systems only use ring 0 for the kernel, and ring 3 for user applications.</p>
+<p>The inner rings have access to the outer rings, so the kernel has access to all applications.</p>
+<p>Inner rings are more sensitive to security vulnerabilities, because the impact of a vulnerability could compromise the whole machine.</p>
+<h1 id="user-vs-root">User vs Root</h1>
+<p>On Unix, the user with UID 0 is known as the superuser, or <code>root</code></p>
+<p><code>root</code> processes don't run in ring 0, they still run in ring 3, like any other user.</p>
+<p>However, <code>root</code> can load/unload kernel modules, and those modules can run kernel code in ring 0.</p>
+<h1 id="sources-references">Sources &amp; References</h1>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/GNU_C_Library">Wikipedia - GNU C Library / glibc</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Operating_system">Wikipedia - Operating System</a></li>
+</ol>
+
+    </div>
+
+    <h1>Comments</h1>
+    <script src="https://utteranc.es/client.js" repo="tatref/tatref.github.io" issue-term="url" label="comment"
+        theme="dark-blue" crossorigin="anonymous" async>
+        </script>
+
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; tatref
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>

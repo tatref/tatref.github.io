@@ -18,6 +18,10 @@
         <lastmod>2020-12-20</lastmod>
     </url>
     <url>
+        <loc>https://tatref.github.io/blog/2021-os-architecture/</loc>
+        <lastmod>2021-01-18</lastmod>
+    </url>
+    <url>
         <loc>https://tatref.github.io/content/</loc>
         <lastmod>2020-12-18</lastmod>
     </url>
@@ -35,6 +39,12 @@
     </url>
     <url>
         <loc>https://tatref.github.io/tags/misc/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/operating-systems/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/operating-systems/page/1/</loc>
     </url>
     <url>
         <loc>https://tatref.github.io/tags/shell/</loc>

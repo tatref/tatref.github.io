@@ -3,10 +3,9 @@ title = "Operating Systems Architecture"
 slug = "2021/os-architecture"
 #description = "a short description"
 
-date = 2099-01-01
+date = 2021-01-18
 #updated = 2099-01-01
 
-draft = true
 
 [taxonomies]
 tags = ["Operating Systems"]
@@ -22,7 +21,7 @@ These concepts are tied to the architecture, so they still apply with other oper
 # Operating System Layers
 Operating systems are organized in abstraction layers, bottom layer closer to the hardware, upper layers closer to user applications.
 
-![Kernel Layout](/assets/2021/Operating_system_placement.svg)
+![Kernel Layout](/assets/2021/os-architecture_Operating_system_placement.svg)
 
 <i>Source: <a href=https://en.wikipedia.org/wiki/Operating_system>https://en.wikipedia.org/wiki/Operating_system</a></i>
 
