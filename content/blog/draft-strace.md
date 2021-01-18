@@ -14,17 +14,17 @@ tags = ["linux", "strace"]
 +++
 
 # Introduction
-Programs interact with the operating system via syscalls or system calls.
+Programs interact with the operating system via system calls or syscalls.
 
-TODO: diagram
+TODO: diagram https://www.linuxbnb.net/wp-content/uploads/2018/06/system-call-overview-1-768x580.png
+
+<i>Source: </i>
 
 Syscalls are used to interact with:
 * files: open, read, write, list
 * network: open sockets, read, write
 * memory: allocation, deallocation
 * processes: creation, termination
-
-Without syscalls, a program coudln't even be created, because 2 syscall are required just to create a new process on Linux.
 
 
 # Tracing System Calls with `strace`

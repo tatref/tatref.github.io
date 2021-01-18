@@ -1,6 +1,6 @@
 +++
 title = "POSIX Conventions"
-slug = "posix-conventions"
+slug = "2020/posix-conventions"
 #description = "a short description"
 
 date = 2020-12-20
