@@ -21,7 +21,7 @@ taxonomies = [
 ]
 
 [markdown]
-extra_syntaxes = ["syntaxes"]
+extra_syntaxes_and_themes = ["syntaxes"]
 highlight_code = true
 
 
