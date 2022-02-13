@@ -115,7 +115,7 @@
 <p>These concepts are tied to the architecture, so they still apply with other operating systems (for example, see <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/user-mode-and-kernel-mode">Windows user mode and kernel mode</a>).</p>
 <h1 id="operating-system-layers">Operating System Layers</h1>
 <p>Operating systems are organized in abstraction layers, bottom layer closer to the hardware, upper layers closer to user applications.</p>
-<p><img src="/assets/2021/os-architecture_Operating_system_placement.svg" alt="Kernel Layout" /></p>
+<p><img src="os-architecture_Operating_system_placement.svg" alt="Kernel Layout" /></p>
 <p><i>Source: <a href=https://en.wikipedia.org/wiki/Operating_system>https://en.wikipedia.org/wiki/Operating_system</a></i></p>
 <p>The kernel is responsible for:</p>
 <ul>
@@ -128,7 +128,7 @@
 </ul>
 <h1 id="system-calls">System Calls</h1>
 <p>User processes interact with the kernel using <strong>system calls</strong> or <strong>syscalls</strong>.</p>
-<p><img src="/assets/2021/os-architecture_syscall.svg" alt="System Calls" /></p>
+<p><img src="os-architecture_syscall.svg" alt="System Calls" /></p>
 <p>Syscalls can be used to</p>
 <ul>
 <li>interact with files (open, read, write)</li>
@@ -139,7 +139,7 @@
 <p><code>strace</code> can be used to trace syscalls called by a program at runtime.</p>
 <h1 id="security-rings">Security Rings</h1>
 <p>Kernel and user space run into different CPU modes, usually represented as concentric rings.</p>
-<p><img src="/assets/2021/os-architecture_Priv_rings.svg" alt="Rings" /></p>
+<p><img src="os-architecture_Priv_rings.svg" alt="Rings" /></p>
 <p><i>Source: <a href=https://en.wikipedia.org/wiki/Protection_ring>https://en.wikipedia.org/wiki/Protection_ring</a></i></p>
 <p>In practice, operating systems only use ring 0 for the kernel, and ring 3 for user applications.</p>
 <p>The inner rings have access to the outer rings, so the kernel has access to all applications.</p>
