@@ -1,23 +1,22 @@
 +++
 title = "Zombie processes"
-slug = "2020/linux-zombie-processes"
+slug = "2022/linux-zombie-processes"
 #description = "What is a zombie process?"
 
-date = 2099-01-01
+date = 2022-02-14
 #updated = 2020-10-10
 
-draft = true
+#draft = true
 
 [taxonomies]
-tags = ["system", "zombies", "linux"]
-#authors = ["JB", "Alfred", "Nobel"]
+tags = ["linux"]
 +++
 
 
 # What You'll Learn
-1. How to create a zombie
+1. What's a zombie
+1. How to create one
 1. How to get rid of it
-1. Memory considerations
 
 
 # Creating a zombie
@@ -48,7 +47,7 @@ time.sleep(0.1)
 
 print('Press enter to wait()')
 input()
-os.waitpid(pid, 0)
+os.waitpid(pid, 0)  # The child is a zombie until we execute this line
 
 print('Zombie child reaped')
 
@@ -56,7 +55,7 @@ print('Press enter to exit')
 input()
 ```
 
-Copy the code to a file `zombie1.py` and run it in one terminal. Press ENTER or CTRL-C to kill the zombie, don't do it yet!
+Copy the code to a file `zombie1.py` and run it in one terminal. This will create a zombie. If pressing ENTER, the zombie will be killed.
 
 ```shell-session
 $ python3 zombie.py
@@ -64,9 +63,9 @@ Hello from zombie child 7414
 Press enter to wait()
 ```
 
-# Inspecting
+# Inspecting the zombies
 
-Before pressing ENTER, we can list the zombies in another terminal
+Before pressing ENTER (and thus finishing the processes), we can list the zombies in another terminal
 ```shell-session
 $ ps -ely | grep ^Z
 S   UID   PID  PPID  C PRI  NI   RSS    SZ WCHAN  TTY          TIME CMD
@@ -108,10 +107,6 @@ If the `fork()` succeeded, we now have 2 processes.
 
 When a process is created (a task in Linux parlance), an entry is inserted in the tasks list. Each entry contains a [list of open files](https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L973), the [state of the process](https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L658), the [exit status](https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L781])...
 
-TODO: add linux PCB
-http://sop.upv.es/gii-dso/en/t3-procesos-en-linux/gen-t3-procesos-en-linux.html
-https://idea.popcount.org/2012-12-11-linux-process-states/
-
 
 We use the returned `pid` value to check if we are the parent or the child.
 The child just prints it's own pid, and exits
@@ -132,16 +127,20 @@ os.waitpid(pid, 0)
 
 Here is what the lifecycle looks like:
 
-![linux process lifcycle](/assets/2021/linux-zombies-process_lifecycle.svg)
+![linux process lifcycle](linux-zombies-process_lifecycle.svg)
 
 There is no transition from `running` to `deleted`, a process has to become a zombie first.
 
 Also note that there is no `dead` or `deleted` state: when the parent calls `wait()`, the child just ceases to exist if it was in the `zombie` state.
 
-At that moment, the kernel passes the exit status of the child to the parent, and delete the process from the 
+At that moment, the kernel passes the exit status of the child to the parent, and delete the process from the tasks list.
 
 
 # SIGCHLD
+
+When a child exits, the parent gets notified with `SIGCHLD` (17)
+
+We can add the following piece of code at the beginning of the script to show it:
 
 ```py3
 import signal
@@ -152,7 +151,6 @@ def handler(signum, frame):
 signal.signal(signal.SIGCHLD, handler)
 ```
 
-When the child exits, the parent gets notified with `SIGCHLD` (17)
 ```shell-session
 $ ./zombies.py 
 Hello from child 8537
@@ -160,10 +158,12 @@ Hello from child 8537
 Press enter to wait()
 ```
 
+When this signal is received, a parent should check it's children with `wait` to receive their exit codes, and clean the processes from the process list.
 
 # Conclusion
-- zombie is an expected state of a Linux program
-- too many zombies could mean the parent process is having an issue
+- Zombie is an expected state of a Linux program
+- Too many zombies could mean the parent process is having an issue
+- The zombie process in itself is not an issue
 
 # Sources & References
 1. Processes, forks, signals... - [BogoToBogo](https://www.bogotobogo.com/Linux/linux_process_and_signals.php)
