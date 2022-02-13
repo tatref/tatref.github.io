@@ -21,7 +21,7 @@ These concepts are tied to the architecture, so they still apply with other oper
 # Operating System Layers
 Operating systems are organized in abstraction layers, bottom layer closer to the hardware, upper layers closer to user applications.
 
-![Kernel Layout](/assets/2021/os-architecture_Operating_system_placement.svg)
+![Kernel Layout](os-architecture_Operating_system_placement.svg)
 
 <i>Source: <a href=https://en.wikipedia.org/wiki/Operating_system>https://en.wikipedia.org/wiki/Operating_system</a></i>
 
@@ -37,7 +37,7 @@ The kernel is responsible for:
 # System Calls
 User processes interact with the kernel using **system calls** or **syscalls**.
 
-![System Calls](/assets/2021/os-architecture_syscall.svg)
+![System Calls](os-architecture_syscall.svg)
 
 
 Syscalls can be used to
@@ -53,7 +53,7 @@ Syscalls are either called directly by the user process, or called via a glibc w
 # Security Rings
 Kernel and user space run into different CPU modes, usually represented as concentric rings.
 
-![Rings](/assets/2021/os-architecture_Priv_rings.svg)
+![Rings](os-architecture_Priv_rings.svg)
 
 <i>Source: <a href=https://en.wikipedia.org/wiki/Protection_ring>https://en.wikipedia.org/wiki/Protection_ring</a></i>
 
