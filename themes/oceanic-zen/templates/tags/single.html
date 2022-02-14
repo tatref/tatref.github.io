@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block main %}
+<h1>Pages tagged {{ term.name }}</h1>
+
+<ul>
+    {% for page in term.pages %}
+    <li>
+        {{ page.date | date(format="%d %b %Y") }}
+        <a href="{{ page.permalink | safe}}">
+            {{ page.title }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock main %}

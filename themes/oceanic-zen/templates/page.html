@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block main %}
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>{{ page.title }}</h1>
+        <div class="border"></div>
+        <time datetime="{{ page.date | date(format=" %Y-%m-%d") }}" class="date" itemprop="datePublished">
+            {% if page.updated %}
+            <del>{{ page.date | date(format="%d %b %Y") }}</del> - Updated {{ page.updated | date(format="%d %b %Y") }}
+            {% else %}
+            {{ page.date | date(format="%d %b %Y") }}
+            {% endif %}
+        </time>
+        <div class="tags">
+            {% if page.taxonomies.tags is defined %}
+            Tags:
+            {% for tag in page.taxonomies.tags %}
+            <a href="/tags/{{ tag | safe }}">{{ tag }}</a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div>
+        {% if page.toc | length > 2 %}
+        <ul>
+            {% for h1 in page.toc %}
+            <li>
+                <a href="{{h1.permalink | safe}}">{{ h1.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="border"></div>
+
+    <div itemprop="articleBody">
+        {{ page.content | safe }}
+    </div>
+
+    <h1>Comments</h1>
+    <script src="https://utteranc.es/client.js" repo="tatref/tatref.github.io" issue-term="url" label="comment"
+        theme="dark-blue" crossorigin="anonymous" async>
+        </script>
+
+</article>
+{% endblock main %}
