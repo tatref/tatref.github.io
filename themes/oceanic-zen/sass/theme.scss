@@ -23,7 +23,7 @@
 }
 
 $font: "IBM Plex Sans", sans-serif;
-$font-mono:  "IBM Plex Mono", monospace;
+$font-mono: "IBM Plex Mono", monospace;
 $padding: 8px;
 
 body {
@@ -108,7 +108,7 @@ a {
 }
 
 a:hover {
-    text-decoration:  underline;
+    text-decoration: underline;
 }
 
 h1 {
@@ -153,12 +153,13 @@ code {
     font-family: $font-mono;
 }
 
-p > code, li > code {
+p>code,
+li>code {
     font-weight: bold;
     color: $blue;
     background-color: rgb(16, 21, 34);
-    padding-right:  0.4em;
-    padding-left:  0.4em;
+    padding-right: 0.4em;
+    padding-left: 0.4em;
 }
 
 .logo {
@@ -209,4 +210,9 @@ article img {
 
 img {
     max-width: 100%;
+}
+
+
+.mermaid {
+    background-color: rgb(98, 135, 204);
 }

@@ -1,8 +1,13 @@
 {% extends "index.html" %}
 
+
 {% block title %}{{ page.title }}{% endblock title %}
 
 {% block main %}
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, 'theme': 'neutral' });
+</script>
+
 <article itemscope itemtype="http://schema.org/BlogPosting">
     <div itemprop="headline">
         <h1>{{ page.title }}</h1>

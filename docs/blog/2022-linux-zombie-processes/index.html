@@ -57,6 +57,10 @@
         
         <main>
             
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, 'theme': 'neutral' });
+</script>
+
 <article itemscope itemtype="http://schema.org/BlogPosting">
     <div itemprop="headline">
         <h1>Zombie processes</h1>
@@ -122,46 +126,46 @@
 </ol>
 <h1 id="creating-a-zombie">Creating a zombie</h1>
 <p>Lets start with a script to create a zombie</p>
-<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#65737e;">#!/usr/bin/env python3</span><span style="color:#65737e;">
+<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#65737e;">#!/usr/bin/env python3
 </span><span>
-</span><span style="color:#b48ead;">import </span><span>os</span><span>
-</span><span style="color:#b48ead;">import </span><span>sys</span><span>
-</span><span style="color:#b48ead;">import </span><span>time</span><span>
+</span><span style="color:#b48ead;">import </span><span>os
+</span><span style="color:#b48ead;">import </span><span>sys
+</span><span style="color:#b48ead;">import </span><span>time
 </span><span>
 </span><span>
-</span><span style="color:#b48ead;">try</span><span>:</span><span>
-</span><span>    pid = os.</span><span style="color:#bf616a;">fork</span><span>()</span><span>
-</span><span style="color:#b48ead;">except </span><span>Exception </span><span style="color:#b48ead;">as </span><span>e:</span><span>
-</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Fork failed</span><span>&#39;)</span><span>
-</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">1</span><span>)</span><span>
+</span><span style="color:#b48ead;">try</span><span>:
+</span><span>    pid = os.</span><span style="color:#bf616a;">fork</span><span>()
+</span><span style="color:#b48ead;">except </span><span>Exception </span><span style="color:#b48ead;">as </span><span>e:
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Fork failed</span><span>&#39;)
+</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">1</span><span>)
 </span><span>
-</span><span style="color:#b48ead;">if </span><span>pid == </span><span style="color:#d08770;">0</span><span>:</span><span>
-</span><span>    </span><span style="color:#65737e;"># child process</span><span style="color:#65737e;">
-</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Hello from zombie child </span><span>&#39; + </span><span style="color:#bf616a;">str</span><span>(os.</span><span style="color:#bf616a;">getpid</span><span>()))</span><span>
-</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">0</span><span>)</span><span>
+</span><span style="color:#b48ead;">if </span><span>pid == </span><span style="color:#d08770;">0</span><span>:
+</span><span>    </span><span style="color:#65737e;"># child process
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Hello from zombie child </span><span>&#39; + </span><span style="color:#bf616a;">str</span><span>(os.</span><span style="color:#bf616a;">getpid</span><span>()))
+</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">0</span><span>)
 </span><span>
-</span><span style="color:#65737e;"># parent process</span><span style="color:#65737e;">
-</span><span>time.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">0.1</span><span>)</span><span>
+</span><span style="color:#65737e;"># parent process
+</span><span>time.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">0.1</span><span>)
 </span><span>
-</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to wait()</span><span>&#39;)</span><span>
-</span><span style="color:#96b5b4;">input</span><span>()</span><span>
-</span><span>os.</span><span style="color:#bf616a;">waitpid</span><span>(pid, </span><span style="color:#d08770;">0</span><span>)  </span><span style="color:#65737e;"># The child is a zombie until we execute this line</span><span style="color:#65737e;">
+</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to wait()</span><span>&#39;)
+</span><span style="color:#96b5b4;">input</span><span>()
+</span><span>os.</span><span style="color:#bf616a;">waitpid</span><span>(pid, </span><span style="color:#d08770;">0</span><span>)  </span><span style="color:#65737e;"># The child is a zombie until we execute this line
 </span><span>
-</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Zombie child reaped</span><span>&#39;)</span><span>
+</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Zombie child reaped</span><span>&#39;)
 </span><span>
-</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to exit</span><span>&#39;)</span><span>
-</span><span style="color:#96b5b4;">input</span><span>()</span><span>
+</span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to exit</span><span>&#39;)
+</span><span style="color:#96b5b4;">input</span><span>()
 </span></code></pre>
 <p>Copy the code to a file <code>zombie1.py</code> and run it in one terminal. This will create a zombie. If pressing ENTER, the zombie will be killed.</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> python3 zombie.py</span><span>
-</span><span>Hello from zombie child 7414</span><span>
-</span><span>Press enter to wait()</span><span>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> python3 zombie.py
+</span><span>Hello from zombie child 7414
+</span><span>Press enter to wait()
 </span></code></pre>
 <h1 id="inspecting-the-zombies">Inspecting the zombies</h1>
 <p>Before pressing ENTER (and thus finishing the processes), we can list the zombies in another terminal</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ps -ely | grep ^Z</span><span>
-</span><span>S   UID   PID  PPID  C PRI  NI   RSS    SZ WCHAN  TTY          TIME CMD</span><span>
-</span><span>Z  1000  7416  7415  0  80   0     0     0 -      pts/2    00:00:00 python3 &lt;defunct&gt;</span><span>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ps -ely | grep ^Z
+</span><span>S   UID   PID  PPID  C PRI  NI   RSS    SZ WCHAN  TTY          TIME CMD
+</span><span>Z  1000  7416  7415  0  80   0     0     0 -      pts/2    00:00:00 python3 &lt;defunct&gt;
 </span></code></pre>
 <p>A few observations:</p>
 <ul>
@@ -169,58 +173,66 @@
 <li>Program doesn't use any memory (<code>RSS</code> = 0)</li>
 </ul>
 <p>We can also check <code>/proc/&lt;pid&gt;/smaps</code> to validate than the process doesn't have access to any memory</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> cat /proc/7416/smaps</span><span>
-</span><span style="color:#d08770;">$</span><span>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> cat /proc/7416/smaps
+</span><span style="color:#d08770;">$
 </span></code></pre>
 <p>The zombie doesn't have any file descriptor (not even <code>stdin</code>, <code>stdout</code>, or <code>stderr</code>)</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -al /proc/7416/fd/</span><span>
-</span><span>total 0</span><span>
-</span><span>dr-x------ 2 root   root   0 Dec 18 22:42 .</span><span>
-</span><span>dr-xr-xr-x 9 tatref tatref 0 Dec 18 22:14 ..</span><span>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -al /proc/7416/fd/
+</span><span>total 0
+</span><span>dr-x------ 2 root   root   0 Dec 18 22:42 .
+</span><span>dr-xr-xr-x 9 tatref tatref 0 Dec 18 22:14 ..
 </span></code></pre>
 <h1 id="how-it-works">How it works</h1>
 <p>Let's go into the script step by step.</p>
 <p>First, we try to fork the current process</p>
-<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">try</span><span>:</span><span>
-</span><span>    pid = os.</span><span style="color:#bf616a;">fork</span><span>()</span><span>
-</span><span style="color:#b48ead;">except </span><span>Exception </span><span style="color:#b48ead;">as </span><span>e:</span><span>
-</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Fork failed</span><span>&#39;)</span><span>
-</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">1</span><span>)</span><span>
+<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">try</span><span>:
+</span><span>    pid = os.</span><span style="color:#bf616a;">fork</span><span>()
+</span><span style="color:#b48ead;">except </span><span>Exception </span><span style="color:#b48ead;">as </span><span>e:
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Fork failed</span><span>&#39;)
+</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">1</span><span>)
 </span></code></pre>
 <p>If the <code>fork()</code> succeeded, we now have 2 processes.</p>
 <p>When a process is created (a task in Linux parlance), an entry is inserted in the tasks list. Each entry contains a <a href="https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L973">list of open files</a>, the <a href="https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L658">state of the process</a>, the <a href="https://github.com/torvalds/linux/blob/71c061d2443814de15e177489d5cc00a4a253ef3/include/linux/sched.h#L781%5D">exit status</a>...</p>
 <p>We use the returned <code>pid</code> value to check if we are the parent or the child.
 The child just prints it's own pid, and exits</p>
-<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">if </span><span>pid == </span><span style="color:#d08770;">0</span><span>:</span><span>
-</span><span>    </span><span style="color:#65737e;"># child</span><span style="color:#65737e;">
-</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Hello from zombie child </span><span>&#39; + </span><span style="color:#bf616a;">str</span><span>(os.</span><span style="color:#bf616a;">getpid</span><span>()))</span><span>
-</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">0</span><span>)</span><span>
+<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">if </span><span>pid == </span><span style="color:#d08770;">0</span><span>:
+</span><span>    </span><span style="color:#65737e;"># child
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Hello from zombie child </span><span>&#39; + </span><span style="color:#bf616a;">str</span><span>(os.</span><span style="color:#bf616a;">getpid</span><span>()))
+</span><span>    sys.</span><span style="color:#bf616a;">exit</span><span>(</span><span style="color:#d08770;">0</span><span>)
 </span><span>
 </span></code></pre>
 <p>The parent will block until we press enter. It will then wait for the child process to terminate using <code>waitpid()</code></p>
-<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to wait()</span><span>&#39;)</span><span>
-</span><span style="color:#96b5b4;">input</span><span>()</span><span>
-</span><span>os.</span><span style="color:#bf616a;">waitpid</span><span>(pid, </span><span style="color:#d08770;">0</span><span>)</span><span>
+<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Press enter to wait()</span><span>&#39;)
+</span><span style="color:#96b5b4;">input</span><span>()
+</span><span>os.</span><span style="color:#bf616a;">waitpid</span><span>(pid, </span><span style="color:#d08770;">0</span><span>)
 </span></code></pre>
 <p>Here is what the lifecycle looks like:</p>
-<p><img src="linux-zombies-process_lifecycle.svg" alt="linux process lifcycle" /></p>
+<div class="mermaid">
+    graph LR
+    subgraph alive
+    running --- sleeping
+    running --- stopped
+    running -- Child calls exit --> zombie
+    end
+    zombie -- Parent calls wait --> last([deleted])
+</div>
 <p>There is no transition from <code>running</code> to <code>deleted</code>, a process has to become a zombie first.</p>
 <p>Also note that there is no <code>dead</code> or <code>deleted</code> state: when the parent calls <code>wait()</code>, the child just ceases to exist if it was in the <code>zombie</code> state.</p>
 <p>At that moment, the kernel passes the exit status of the child to the parent, and delete the process from the tasks list.</p>
 <h1 id="sigchld">SIGCHLD</h1>
 <p>When a child exits, the parent gets notified with <code>SIGCHLD</code> (17)</p>
 <p>We can add the following piece of code at the beginning of the script to show it:</p>
-<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">import </span><span>signal</span><span>
+<pre data-lang="py3" style="background-color:#2b303b;color:#c0c5ce;" class="language-py3 "><code class="language-py3" data-lang="py3"><span style="color:#b48ead;">import </span><span>signal
 </span><span>
-</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">handler</span><span>(</span><span style="color:#bf616a;">signum</span><span>, </span><span style="color:#bf616a;">frame</span><span>):</span><span>
-</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Got signal</span><span>&#39;, signum)</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">handler</span><span>(</span><span style="color:#bf616a;">signum</span><span>, </span><span style="color:#bf616a;">frame</span><span>):
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&#39;</span><span style="color:#a3be8c;">Got signal</span><span>&#39;, signum)
 </span><span>
-</span><span>signal.</span><span style="color:#bf616a;">signal</span><span>(signal.</span><span style="color:#bf616a;">SIGCHLD</span><span>, handler)</span><span>
+</span><span>signal.</span><span style="color:#bf616a;">signal</span><span>(signal.</span><span style="color:#bf616a;">SIGCHLD</span><span>, handler)
 </span></code></pre>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ./zombies.py </span><span>
-</span><span>Hello from child 8537</span><span>
-</span><span>**Got signal 17**</span><span>
-</span><span>Press enter to wait()</span><span>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ./zombies.py 
+</span><span>Hello from child 8537
+</span><span>**Got signal 17**
+</span><span>Press enter to wait()
 </span></code></pre>
 <p>When this signal is received, a parent should check it's children with <code>wait</code> to receive their exit codes, and clean the processes from the process list.</p>
 <h1 id="conclusion">Conclusion</h1>
