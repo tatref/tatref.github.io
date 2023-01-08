@@ -18,7 +18,7 @@ Here are some advantages of using shared libraries:
 
 * Shared libraries (`.dll` on Windows, `.so` on Linux) allow code reuse between executables.
 * This reduces disk usage on disk, because each executable is smaller, but also memory usage, because the library can be loaded only once by the OS, and shared between processes.
-* Also, fixing bugs or security issues require updating a single package, instead of updating every program impacted.
+* Also, fixing bugs or security issues require updating a single package, instead of updating (or having to recompile) every dependant program.
 * Last, shared libraries can be switched at run-time without recompiling the whole program, making testing easier.
 
 However, shared libraries can prevent some optimizations opportunities from the compiler.
@@ -41,9 +41,9 @@ $ ldd /usr/bin/ls
 The dynamic linker is responsible for creating the process memory image at run-time.
 
 It's jobs are:
-* coping the executable to the process image in memory
+* copying the executable to the process image in memory
 * locating and adding the required shared libraries
-* transfering the execution to the program
+* transferring the execution to the program
 
 
 The dynamic linker of an executable is located in the `INTERP` program header, and can be inspected with `readlelf`. On Linux, it is `/lib64/ld-linux-x86-64.so.2`
@@ -65,7 +65,7 @@ Program Headers:
 # Shared Libraries Locations
 On Linux, the default directories containing shared libraries are `/lib`, `/usr/lib` and theirs 64 bits counter parts.
 
-Searching theses directories on each program execution would be slow, so a cache is created on boot with `ldconfig`. The cache is built under `/etc/ld.so.cache`, and uses the default directories, plus any additional directory defined in `/etc/ld.so.conf` or `/etc/ld.so.conf.d/`
+Searching theses directories on each program execution would be slow, so a cache is created at boot time with `ldconfig`. The cache is built under `/etc/ld.so.cache`, and uses the default directories, plus any additional directory defined in `/etc/ld.so.conf` or `/etc/ld.so.conf.d/`
 
 
 

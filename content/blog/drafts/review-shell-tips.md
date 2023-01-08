@@ -16,7 +16,7 @@ tags = ["shell"]
 # Introduction
 The shell can be a very powerful tool, but if used like Notepad, it will just be painful and error prone
 
-Here I present the tips I use everyday to be productive in my work
+Here I present the tips I use everyday to be productive at work
 
 
 # List and Finding Files
@@ -72,7 +72,7 @@ First tip: don't name files `.back` or `.old`, always append at least the curren
 $ cp app.conf app.conf.2020-12-19
 ```
 
-Using shell expansion is much quicker
+Using shell expansion is quicker
 ```shell-session
 $ cp app.conf{,.2020-12-19}
 ```
@@ -94,7 +94,7 @@ It can also delete all empty parents directories up to `/` with `-p`
 
 # Reading logs: `vi`, `tail`, `view`, `less`...?
 1. Don't use `vi` or `vim` to read logs. It's safer to use `view` because it disables editing
-1. `tail -f <some log>` will show use the last appended lines in the file, however, you can navigate in the file
+1. `tail -f <some log>` will show the last appended lines in the file, and keep showing new lines as they come in.
 1. `less` can combine the best of `tail -f` and `view`. Open a file with `less <log>`. You can search with `/` like in `vim` or `view`. Press `F` (SHIFT-F) to start tailing the file. Press CTRL-C to stop tailing
 
 
@@ -116,8 +116,9 @@ $ watch ls -l file
 
 Useful flags include
 * `-d`: highlight differences
-* `-e`: freeze on error
+* `-e`: freeze on error (return code != 0)
 * `-n <interval>`
+
 
 
 # Sources & References

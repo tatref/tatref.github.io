@@ -94,7 +94,7 @@ Here is what the bytecode actually looks like in binary
 8
 ```
 
-Instructions, while in binary format are called opcodes.
+Instructions in binary format are called opcodes.
 We already know that each instruction is 2 bytes long, but the actual opcode is only 1 byte long, the second byte is the argument.
 Here is how to split the opcode and the argument
 

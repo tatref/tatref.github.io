@@ -8,7 +8,7 @@ date = 2021-01-18
 
 
 [taxonomies]
-tags = ["Operating Systems"]
+tags = ["operating-systems"]
 +++
 
 

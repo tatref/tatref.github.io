@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        
+
+        <title>System Calls &amp; strace</title>
+
+        
+            <link rel="stylesheet" href="https://tatref.github.io/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;tatref.github.io" class="logo">@tatref</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/blog/">
+                                    <span itemprop="name">Blog</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/about/">
+                                    <span itemprop="name">About</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/tatref">
+                                <img class="icon" src="https:&#x2F;&#x2F;tatref.github.io/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, 'theme': 'neutral' });
+</script>
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>System Calls &amp; strace</h1>
+        <div class="border"></div>
+        <time datetime=" 2023-01-08" class="date" itemprop="datePublished">
+            
+            08 Jan 2023
+            
+        </time>
+        <div class="tags">
+            
+            Tags:
+            
+            <a href="/tags/linux">linux</a>
+            
+            <a href="/tags/operating-systems">operating-systems</a>
+            
+            
+        </div>
+    </div>
+
+    <div>
+        
+        <ul>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-trace/#introduction">Introduction</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-trace/#tracing-system-calls-with-strace">Tracing System Calls with strace</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-trace/#conclusion">Conclusion</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-trace/#sources-references">Sources &amp; References</a>
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="border"></div>
+
+    <div itemprop="articleBody">
+        <h1 id="introduction">Introduction</h1>
+<p>Programs interact with the operating system (kernel) via system calls or syscalls.</p>
+<p><img src="https://tatref.github.io/blog/2023-linux-trace/os-architecture_syscall.svg" alt="System Calls" /></p>
+<p>Syscalls are used to interact with:</p>
+<ul>
+<li>files: open, read, write, list</li>
+<li>network: open sockets, read, write</li>
+<li>memory: allocation, deallocation</li>
+<li>processes: creation, termination</li>
+<li>...</li>
+</ul>
+<h1 id="tracing-system-calls-with-strace">Tracing System Calls with <code>strace</code></h1>
+<p>Tracing syscalls is done with the <code>strace</code> command</p>
+<h2 id="simple-usage">Simple usage</h2>
+<p>You can run a simple command under <code>strace</code> like so</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace ls /etc/fstab
+</span></code></pre>
+<p>The output is pretty big, even for a simple command. It will contain the syscalls to get the attributes of the file (<code>statx</code>), and the syscall to write to stdout (<code>write</code>)</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0
+</span><span>statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0
+</span><span>write(1, &quot;/etc/fstab\n&quot;, 11)            = 11
+</span></code></pre>
+<p>To get information on each syscall, you can check the manual</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> man statx
+</span><span>[...]
+</span><span>DESCRIPTION
+</span><span>       This function returns information about a file, storing it in the buffer pointed to by statxbuf.
+</span></code></pre>
+<h2 id="advanced-usage">Advanced usage</h2>
+<p>Useful options include</p>
+<ul>
+<li><code>-p &lt;pid&gt;</code>: specify PID to trace</li>
+<li><code>-f</code>: also trace children</li>
+<li><code>-e &lt;syscall list&gt;</code>: specify which syscall you want to trace</li>
+<li><code>-tt</code>: add timestamps</li>
+<li><code>-T</code>: add syscall duration</li>
+</ul>
+<p>Open a first terminal, and get its PID</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> echo $$
+</span><span>9431
+</span></code></pre>
+<p>Open a second terminal, and trace the <code>clone</code>, <code>execve</code>, and <code>exit_group</code> syscall</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace -f -e clone,execve,exit_group -p 9431
+</span><span>strace: Process 9431 attached
+</span></code></pre>
+<p>Run a command in the first terminal, and check the output of <code>strace</code></p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace -f -e clone,execve,exit_group -p 9431
+</span><span>strace: Process 9431 attached
+</span><span>clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f88f2f7ca10) = 10006
+</span><span>strace: Process 10006 attached
+</span><span>[pid 10006] execve(&quot;/usr/bin/ls&quot;, [&quot;ls&quot;, &quot;--color=auto&quot;], 0x55abc5fd5280 /* 39 vars */) = 0
+</span><span>[pid 10006] exit_group(0)               = ?
+</span><span>[pid 10006] +++ exited with 0 +++
+</span><span>^C
+</span><span>strace: Process 9431 detached
+</span></code></pre>
+<ol>
+<li><code>clone()</code> is used to clone the current (shell) process. The return value is the PID of the new process</li>
+<li><code>execve()</code> will load the executable specified as first argument, and create a new stack/heap in place</li>
+<li>After <code>ls</code> has done its work, it exits with <code>exit_group</code></li>
+</ol>
+<h1 id="conclusion">Conclusion</h1>
+<p><code>strace</code> is a great tool to debug applications if you don't know their inner workings, or if you don't have any trace/log</p>
+<h1 id="sources-references">Sources &amp; References</h1>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/System_call">Wikipedia - System call</a></li>
+<li>man strace</li>
+</ol>
+
+    </div>
+
+    <h1>Comments</h1>
+    <script src="https://utteranc.es/client.js" repo="tatref/tatref.github.io" issue-term="url" label="comment"
+        theme="dark-blue" crossorigin="anonymous" async>
+        </script>
+
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; tatref
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>
