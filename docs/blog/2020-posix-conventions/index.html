@@ -116,51 +116,45 @@
 <p>Nearly all conventions on Linux originate from Unix or POSIX</p>
 <h1 id="shell-prompt">Shell Prompt</h1>
 <p>The prompt is what is displayed when you start a terminal, the default looks like</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">user@server:~$</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">user@server:~$
 </span></code></pre>
 <p>This is useful to know which server we're connected to</p>
 <p>I might abbreviate this to just <code>$</code> (simple user), <code>#</code> (root), or <code>&gt;</code> (non-shell prompt)</p>
 <p>For example</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ sudo su - </span><span style="color:#dcdcdc;">
-# mysql</span><span style="color:#dcdcdc;">
-mysql&gt; exit</span><span style="color:#dcdcdc;">
-</span></code></pre><h1 id="command-line-arguments">Command line arguments</h1>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> sudo su - 
+</span><span style="color:#d08770;">#</span><span style="color:#b48ead;"> mysql
+</span><span style="color:#d08770;">mysql&gt;</span><span style="color:#b48ead;"> exit
+</span></code></pre>
+<h1 id="command-line-arguments">Command line arguments</h1>
 <p><code>[]</code> is used for optional argument</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ ls [filename]</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls [filename]
 </span></code></pre>
 <p><code>...</code> is used for repeated arguments</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ ls [filename,...]</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls [filename,...]
 </span></code></pre>
 <p><code>&lt;&gt;</code> is used for a mandatory argument</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ cp &lt;source&gt; &lt;destination&gt;</span><span style="color:#dcdcdc;">
-</span></code></pre><h1 id="program-options">Program Options</h1>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> cp &lt;source&gt; &lt;destination&gt;
+</span></code></pre>
+<h1 id="program-options">Program Options</h1>
 <p>Single dash <code>-</code> is followed by multiple single character options. If multiple characters are specified, each character is a specific option</p>
 <p>The following is equivalent</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ ls -ltr</span><span style="color:#dcdcdc;">
-$ ls -l -t -r</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -ltr
+</span><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -l -t -r
 </span></code></pre>
 <p>A single dash <code>-</code>, when used in the place of a filename, is a synonym for <code>stdin</code>. Here we concatenate <strong>bar</strong> and <strong>foo</strong> from <code>stdin</code></p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ echo foo | cat bar -</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> echo foo | cat bar -
 </span></code></pre>
 <p>Double dash <code>--</code> is followed by a single, multi character option</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ ls --all</span><span style="color:#dcdcdc;">
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls --all
 </span></code></pre>
 <p>A single double dash <code>--</code> without trailing characters shows the end of options. It's useful if an argument starts with a double dash</p>
-<pre style="background-color:#1e1e1e;">
-<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ ls -al --annoying-filename</span><span style="color:#dcdcdc;">
-ls: unrecognized option &#39;--annoying-filename&#39;</span><span style="color:#dcdcdc;">
-Try &#39;ls --help&#39; for more information.</span><span style="color:#dcdcdc;">
-$ ls -al -- --annoying-filename</span><span style="color:#dcdcdc;">
--rw-r--r--  1 tatref tatref     0 Dec 20 22:33 --annoying-filename</span><span style="color:#dcdcdc;">
-</span></code></pre><h1 id="sources-references">Sources &amp; References</h1>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -al --annoying-filename
+</span><span>ls: unrecognized option &#39;--annoying-filename&#39;
+</span><span>Try &#39;ls --help&#39; for more information.
+</span><span style="color:#d08770;">$</span><span style="color:#b48ead;"> ls -al -- --annoying-filename
+</span><span>-rw-r--r--  1 tatref tatref     0 Dec 20 22:33 --annoying-filename
+</span></code></pre>
+<h1 id="sources-references">Sources &amp; References</h1>
 <ol>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xcu_chap02.html">POSIX - Shell Command Language</a></li>
 <li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html">POSIX - Utility Conventions</a></li>
