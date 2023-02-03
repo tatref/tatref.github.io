@@ -1,6 +1,6 @@
 +++
-title = "Linux Memory - Drop caches & Compact Memory"
-slug = "2023-linux-memory-compact-drop-caches"
+title = "Visualizing Linux Memory Compaction"
+slug = "2023-visual-linux-memory-compact"
 #description = "a short description"
 
 date = 2023-02-03
@@ -32,6 +32,16 @@ Node 0, zone   Normal  61346  38894  16324   4993   1241    353    150     80   
 When a process claims memory, it is best if the buddy allocator can find a large enough chunks that fits the request.
 
 Over time, the memory may become fragmented, and memory allocation will be less efficient: more small chunks will be available, at the expense of bigger chunks.
+
+It is possible to defragment memory. Dropping caches first will improve compaction efficiency.
+
+This is done by writing to two pseudo files. Here "3" will drop all caches.
+
+```shell-session
+# echo 1 > /proc/sys/vm/compact_memory
+# echo 3 > /proc/sys/vm/drop_caches
+```
+
 
 # Demo
 ## VM specs

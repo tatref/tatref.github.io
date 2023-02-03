@@ -7,7 +7,7 @@
 
         
 
-        <title>Linux Memory - Drop caches &amp; Compact Memory</title>
+        <title>Visualizing Linux Memory Compaction</title>
 
         
             <link rel="stylesheet" href="https://tatref.github.io/theme.css">
@@ -63,7 +63,7 @@
 
 <article itemscope itemtype="http://schema.org/BlogPosting">
     <div itemprop="headline">
-        <h1>Linux Memory - Drop caches &amp; Compact Memory</h1>
+        <h1>Visualizing Linux Memory Compaction</h1>
         <div class="border"></div>
         <time datetime=" 2023-02-03" class="date" itemprop="datePublished">
             
@@ -87,15 +87,15 @@
         <ul>
             
             <li>
-                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#intro">Intro</a>
+                <a href="https://tatref.github.io/blog/2023-visual-linux-memory-compact/#intro">Intro</a>
             </li>
             
             <li>
-                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#demo">Demo</a>
+                <a href="https://tatref.github.io/blog/2023-visual-linux-memory-compact/#demo">Demo</a>
             </li>
             
             <li>
-                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#sources-references">Sources &amp; References</a>
+                <a href="https://tatref.github.io/blog/2023-visual-linux-memory-compact/#sources-references">Sources &amp; References</a>
             </li>
             
         </ul>
@@ -117,6 +117,11 @@
 </span></code></pre>
 <p>When a process claims memory, it is best if the buddy allocator can find a large enough chunks that fits the request.</p>
 <p>Over time, the memory may become fragmented, and memory allocation will be less efficient: more small chunks will be available, at the expense of bigger chunks.</p>
+<p>It is possible to defragment memory. Dropping caches first will improve compaction efficiency.</p>
+<p>This is done by writing to two pseudo files. Here &quot;3&quot; will drop all caches.</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">#</span><span style="color:#b48ead;"> echo 1 &gt; /proc/sys/vm/compact_memory
+</span><span style="color:#d08770;">#</span><span style="color:#b48ead;"> echo 3 &gt; /proc/sys/vm/drop_caches
+</span></code></pre>
 <h1 id="demo">Demo</h1>
 <h2 id="vm-specs">VM specs</h2>
 <p>Server is a virtual machine running in VirtualBox with 8192 &quot;MB&quot; of memory.</p>
@@ -141,13 +146,13 @@
 <li>This is a Hilbert curve, it preserves locality; meaning that close addresses are close on the picture.</li>
 </ul>
 <p>Initial state</p>
-<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/1-initial_state.png" alt="1" /></p>
+<p><img src="https://tatref.github.io/blog/2023-visual-linux-memory-compact/1-initial_state.png" alt="1" /></p>
 <p>After compacting memory</p>
-<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/2-after_compact.png" alt="2" /></p>
+<p><img src="https://tatref.github.io/blog/2023-visual-linux-memory-compact/2-after_compact.png" alt="2" /></p>
 <p>After dropping caches</p>
-<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/3-after_drop_caches.png" alt="3" /></p>
+<p><img src="https://tatref.github.io/blog/2023-visual-linux-memory-compact/3-after_drop_caches.png" alt="3" /></p>
 <p>After compacting memory again</p>
-<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/4-after-compact.png" alt="4" /></p>
+<p><img src="https://tatref.github.io/blog/2023-visual-linux-memory-compact/4-after-compact.png" alt="4" /></p>
 <h1 id="sources-references">Sources &amp; References</h1>
 <ol>
 <li>github.com/tatref- <a href="https://github.com/tatref/linux-mem/">linux-mem</a></li>
