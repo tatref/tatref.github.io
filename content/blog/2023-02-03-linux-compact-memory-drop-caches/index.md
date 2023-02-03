@@ -6,7 +6,7 @@ slug = "2023-linux-memory-compact-drop-caches"
 date = 2023-02-03
 #updated = 2099-01-01
 
-draft = true
+draft = false
 
 [taxonomies]
 tags = ["linux", "memory"]

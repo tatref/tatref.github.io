@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        
+
+        <title>Linux Memory - Drop caches &amp; Compact Memory</title>
+
+        
+            <link rel="stylesheet" href="https://tatref.github.io/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;tatref.github.io" class="logo">@tatref</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/blog/">
+                                    <span itemprop="name">Blog</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://tatref.github.io/about/">
+                                    <span itemprop="name">About</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/tatref">
+                                <img class="icon" src="https:&#x2F;&#x2F;tatref.github.io/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, 'theme': 'neutral' });
+</script>
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Linux Memory - Drop caches &amp; Compact Memory</h1>
+        <div class="border"></div>
+        <time datetime=" 2023-02-03" class="date" itemprop="datePublished">
+            
+            03 Feb 2023
+            
+        </time>
+        <div class="tags">
+            
+            Tags:
+            
+            <a href="/tags/linux">linux</a>
+            
+            <a href="/tags/memory">memory</a>
+            
+            
+        </div>
+    </div>
+
+    <div>
+        
+        <ul>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#intro">Intro</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#demo">Demo</a>
+            </li>
+            
+            <li>
+                <a href="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/#sources-references">Sources &amp; References</a>
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="border"></div>
+
+    <div itemprop="articleBody">
+        <h1 id="intro">Intro</h1>
+<p>On Linux, memory is allocated by the buddy allocator. It allocates memory in chunks of sizes ranging from 4 kiB (a single page) to 4 MiB</p>
+<p>We can inspect the available memory by chunk size with the pseudo-file <code>/proc/buddyinfo</code>. The first two lines indicate the size of each chunk, while the remaining lines indicate the number of available chunks:</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> cat /proc/buddyinfo 
+</span><span>power of 2               2^0    2^1    2^3    2^4    2^5    2^6    2^7    2^8    2^9   2^10   2^11
+</span><span>size (kiB)                 4      8     16     32     64    128    256    512   1024   2048   4096
+</span><span>
+</span><span>Node 0, zone      DMA      0      0      0      0      0      0      0      0      0      1      3 
+</span><span>Node 0, zone    DMA32   6584   4336   2566   1463    770    435    231    125     83    168    407 
+</span><span>Node 0, zone   Normal  61346  38894  16324   4993   1241    353    150     80     47      3    112 
+</span></code></pre>
+<p>When a process claims memory, it is best if the buddy allocator can find a large enough chunks that fits the request.</p>
+<p>Over time, the memory may become fragmented, and memory allocation will be less efficient: more small chunks will be available, at the expense of bigger chunks.</p>
+<h1 id="demo">Demo</h1>
+<h2 id="vm-specs">VM specs</h2>
+<p>Server is a virtual machine running in VirtualBox with 8192 &quot;MB&quot; of memory.</p>
+<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> free -m
+</span><span>               total        used        free      shared  buff/cache   available
+</span><span>Mem:            7484        3284        4096          12         379        4200
+</span><span>Swap:           1999          39        1960
+</span><span>
+</span><span style="color:#d08770;">$</span><span style="color:#b48ead;"> sudo cat /proc/iomem | grep RAM
+</span><span>00001000-0009fbff : System RAM
+</span><span>00100000-dffeffff : System RAM
+</span><span>100000000-21fffffff : System RAM
+</span></code></pre>
+<h2 id="visual-illustration">Visual illustration</h2>
+<p>The following images were generated with the tool <a href="https://github.com/tatref/linux-mem/"><code>processes2png</code></a> from my Github.</p>
+<ul>
+<li>Each image shows the physical memory of the server</li>
+<li>Black pixels on the right side are outside of RAM due to aspect ratio</li>
+<li>Each pixel represents 1 page (1 kiB)</li>
+<li>Cache is not visible. Kernel memory is not visible. Shared memory is visible if at least one process has a handle to it</li>
+<li>Bright pixels are pixels referenced by a process and dark pixels are not referenced by any process.</li>
+<li>This is a Hilbert curve, it preserves locality; meaning that close addresses are close on the picture.</li>
+</ul>
+<p>Initial state</p>
+<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/1-initial_state.png" alt="1" /></p>
+<p>After compacting memory</p>
+<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/2-after_compact.png" alt="2" /></p>
+<p>After dropping caches</p>
+<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/3-after_drop_caches.png" alt="3" /></p>
+<p>After compacting memory again</p>
+<p><img src="https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/4-after-compact.png" alt="4" /></p>
+<h1 id="sources-references">Sources &amp; References</h1>
+<ol>
+<li>github.com/tatref- <a href="https://github.com/tatref/linux-mem/">linux-mem</a></li>
+<li>docs.kernel.org - <a href="https://docs.kernel.org/admin-guide/sysctl/vm.html">Documentation for /proc/sys/vm/</a></li>
+<li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Hilbert_curve">Hilbert curve</a></li>
+<li>grimoire.carcano.ch - <a href="https://grimoire.carcano.ch/blog/memory-management-the-buddy-allocator/">Memory Management – The Buddy Allocator</a></li>
+</ol>
+
+    </div>
+
+    <h1>Comments</h1>
+    <script src="https://utteranc.es/client.js" repo="tatref/tatref.github.io" issue-term="url" label="comment"
+        theme="dark-blue" crossorigin="anonymous" async>
+        </script>
+
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; tatref
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>

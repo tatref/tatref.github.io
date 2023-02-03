@@ -29,6 +29,10 @@
         <lastmod>2022-02-14</lastmod>
     </url>
     <url>
+        <loc>https://tatref.github.io/blog/2023-linux-memory-compact-drop-caches/</loc>
+        <lastmod>2023-02-03</lastmod>
+    </url>
+    <url>
         <loc>https://tatref.github.io/blog/2023-linux-trace/</loc>
         <lastmod>2023-01-08</lastmod>
     </url>
@@ -44,6 +48,12 @@
     </url>
     <url>
         <loc>https://tatref.github.io/tags/linux/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/memory/</loc>
+    </url>
+    <url>
+        <loc>https://tatref.github.io/tags/memory/page/1/</loc>
     </url>
     <url>
         <loc>https://tatref.github.io/tags/misc/</loc>
