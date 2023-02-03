@@ -123,20 +123,22 @@
 <p>Tracing syscalls is done with the <code>strace</code> command</p>
 <h2 id="simple-usage">Simple usage</h2>
 <p>You can run a simple command under <code>strace</code> like so</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace ls /etc/fstab
+<pre style="background-color:#1e1e1e;">
+<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ strace ls /etc/fstab</span><span style="color:#dcdcdc;">
 </span></code></pre>
 <p>The output is pretty big, even for a simple command. It will contain the syscalls to get the attributes of the file (<code>statx</code>), and the syscall to write to stdout (<code>write</code>)</p>
-<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0
-</span><span>statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0
-</span><span>write(1, &quot;/etc/fstab\n&quot;, 11)            = 11
+<pre style="background-color:#1e1e1e;">
+<code><span style="color:#dcdcdc;">statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0</span><span style="color:#dcdcdc;">
+statx(AT_FDCWD, &quot;/etc/fstab&quot;, AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFREG|0644, stx_size=503, ...}) = 0</span><span style="color:#dcdcdc;">
+write(1, &quot;/etc/fstab\n&quot;, 11)            = 11</span><span style="color:#dcdcdc;">
 </span></code></pre>
 <p>To get information on each syscall, you can check the manual</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> man statx
-</span><span>[...]
-</span><span>DESCRIPTION
-</span><span>       This function returns information about a file, storing it in the buffer pointed to by statxbuf.
-</span></code></pre>
-<h2 id="advanced-usage">Advanced usage</h2>
+<pre style="background-color:#1e1e1e;">
+<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ man statx</span><span style="color:#dcdcdc;">
+[...]</span><span style="color:#dcdcdc;">
+DESCRIPTION</span><span style="color:#dcdcdc;">
+       This function returns information about a file, storing it in the buffer pointed to by statxbuf.</span><span style="color:#dcdcdc;">
+</span></code></pre><h2 id="advanced-usage">Advanced usage</h2>
 <p>Useful options include</p>
 <ul>
 <li><code>-p &lt;pid&gt;</code>: specify PID to trace</li>
@@ -146,23 +148,26 @@
 <li><code>-T</code>: add syscall duration</li>
 </ul>
 <p>Open a first terminal, and get its PID</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> echo $$
-</span><span>9431
+<pre style="background-color:#1e1e1e;">
+<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ echo $$</span><span style="color:#dcdcdc;">
+9431</span><span style="color:#dcdcdc;">
 </span></code></pre>
 <p>Open a second terminal, and trace the <code>clone</code>, <code>execve</code>, and <code>exit_group</code> syscall</p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace -f -e clone,execve,exit_group -p 9431
-</span><span>strace: Process 9431 attached
+<pre style="background-color:#1e1e1e;">
+<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ strace -f -e clone,execve,exit_group -p 9431</span><span style="color:#dcdcdc;">
+strace: Process 9431 attached</span><span style="color:#dcdcdc;">
 </span></code></pre>
 <p>Run a command in the first terminal, and check the output of <code>strace</code></p>
-<pre data-lang="shell-session" style="background-color:#2b303b;color:#c0c5ce;" class="language-shell-session "><code class="language-shell-session" data-lang="shell-session"><span style="color:#d08770;">$</span><span style="color:#b48ead;"> strace -f -e clone,execve,exit_group -p 9431
-</span><span>strace: Process 9431 attached
-</span><span>clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f88f2f7ca10) = 10006
-</span><span>strace: Process 10006 attached
-</span><span>[pid 10006] execve(&quot;/usr/bin/ls&quot;, [&quot;ls&quot;, &quot;--color=auto&quot;], 0x55abc5fd5280 /* 39 vars */) = 0
-</span><span>[pid 10006] exit_group(0)               = ?
-</span><span>[pid 10006] +++ exited with 0 +++
-</span><span>^C
-</span><span>strace: Process 9431 detached
+<pre style="background-color:#1e1e1e;">
+<code class="language-shell-session" data-lang="shell-session"><span style="color:#dcdcdc;">$ strace -f -e clone,execve,exit_group -p 9431</span><span style="color:#dcdcdc;">
+strace: Process 9431 attached</span><span style="color:#dcdcdc;">
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f88f2f7ca10) = 10006</span><span style="color:#dcdcdc;">
+strace: Process 10006 attached</span><span style="color:#dcdcdc;">
+[pid 10006] execve(&quot;/usr/bin/ls&quot;, [&quot;ls&quot;, &quot;--color=auto&quot;], 0x55abc5fd5280 /* 39 vars */) = 0</span><span style="color:#dcdcdc;">
+[pid 10006] exit_group(0)               = ?</span><span style="color:#dcdcdc;">
+[pid 10006] +++ exited with 0 +++</span><span style="color:#dcdcdc;">
+^C</span><span style="color:#dcdcdc;">
+strace: Process 9431 detached</span><span style="color:#dcdcdc;">
 </span></code></pre>
 <ol>
 <li><code>clone()</code> is used to clone the current (shell) process. The return value is the PID of the new process</li>
