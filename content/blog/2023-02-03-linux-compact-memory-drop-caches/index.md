@@ -20,7 +20,7 @@ On Linux, memory is allocated by the buddy allocator. It allocates memory in chu
 We can inspect the available memory by chunk size with the pseudo-file `/proc/buddyinfo`. The first two lines indicate the size of each chunk, while the remaining lines indicate the number of available chunks:
 
 ```shell-session
-[tatref@oracle ~]$ cat /proc/buddyinfo 
+$ cat /proc/buddyinfo 
 power of 2               2^0    2^1    2^3    2^4    2^5    2^6    2^7    2^8    2^9   2^10   2^11
 size (kiB)                 4      8     16     32     64    128    256    512   1024   2048   4096
 
@@ -39,12 +39,12 @@ Over time, the memory may become fragmented, and memory allocation will be less 
 Server is a virtual machine running in VirtualBox with 8192 "MB" of memory.
 
 ```shell-session
-[tatref@srv ~]$ free -m
+$ free -m
                total        used        free      shared  buff/cache   available
 Mem:            7484        3284        4096          12         379        4200
 Swap:           1999          39        1960
 
-[tatref@oracle ~]$ sudo cat /proc/iomem | grep RAM
+$ sudo cat /proc/iomem | grep RAM
 00001000-0009fbff : System RAM
 00100000-dffeffff : System RAM
 100000000-21fffffff : System RAM
