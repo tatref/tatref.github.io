@@ -24,3 +24,9 @@ git push ...
 ```
 
 
+
+Image sequence to gif
+
+```
+ffmpeg.exe -framerate 1 -i "%d.png" -filter_complex "[0:v]fps=1,split[a][b];[b]palettegen[p];[a][p]paletteuse,setpts=1*PTS[v]" -map '[v]' out.gif
+```

@@ -71,21 +71,28 @@ The following images were generated with the tool [`processes2png`](https://gith
 * Bright pixels are pixels referenced by a process and dark pixels are not referenced by any process.
 * This is a Hilbert curve, it preserves locality; meaning that close addresses are close on the picture.
 
+
+
 Initial state
 
-![1](1-initial_state.png)
+<img src="1.png" width="300">
 
 After compacting memory
 
-![2](2-after_compact.png)
+<img src="2.png" width="300">
 
 After dropping caches
 
-![3](3-after_drop_caches.png)
+<img src="3.png" width="300">
 
 After compacting memory again
 
-![4](4-after-compact.png)
+<img src="4.png" width="300">
+
+
+Same as a gif
+
+![1](out.gif)
 
 
 # Sources & References
